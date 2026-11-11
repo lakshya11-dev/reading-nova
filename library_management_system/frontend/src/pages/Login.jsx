@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { loginUser, googleLogin, socialLogin } from "../api/auth";
+import { loginUser, googleLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import logoImg from "../assets/logo.png";
 

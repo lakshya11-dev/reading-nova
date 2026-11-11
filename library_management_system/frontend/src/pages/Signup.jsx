@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { registerUser, googleLogin, socialLogin } from "../api/auth";
+import { registerUser, googleLogin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { CheckCircle2, Mail } from "lucide-react";
 import logoImg from "../assets/logo.png";
