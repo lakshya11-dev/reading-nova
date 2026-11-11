@@ -1,0 +1,35 @@
+# Python & Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# Node & Frontend Build
+node_modules/
+dist/
+dist-ssr/
+*.log
+
+# Editor & System
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Project temp
+user_plans.json
