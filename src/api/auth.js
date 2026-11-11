@@ -19,7 +19,6 @@ export const facebookLogin = async (accessToken) => {
   const response = await api.post("/auth/facebook", { access_token: accessToken });
   return response.data;
 };
-
 export const verifyEmail = async (token) => {
   const response = await api.get(`/auth/verify-email?token=${encodeURIComponent(token)}`);
   return response.data;
