@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { registerUser, googleLogin, socialLogin } from "../api/auth";
+import { registerUser, googleLogin, facebookLogin } from "../api/auth";
+import { initFacebookSDK, loginWithFacebook } from "../utils/facebookAuth";
 import { useAuth } from "../context/AuthContext";
 import { CheckCircle2, Mail } from "lucide-react";
 import logoImg from "../assets/logo.png";
@@ -13,10 +14,15 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fbLoading, setFbLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    initFacebookSDK().catch((e) => console.log("Facebook SDK prefetch:", e));
+  }, []);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -66,6 +72,25 @@ export default function Signup() {
 
   const handleGoogleError = () => {
     setError("Google Sign-In was unsuccessful. Please try again.");
+  };
+
+  const handleFacebookSignup = async () => {
+    setError("");
+    try {
+      setFbLoading(true);
+      const token = await loginWithFacebook();
+      const res = await facebookLogin(token);
+      await login(res.access_token);
+      navigate("/", { replace: true });
+    } catch (err) {
+      const msg =
+        err.response?.data?.detail ||
+        err.message ||
+        "Facebook sign up was unsuccessful. Please try again.";
+      setError(msg);
+    } finally {
+      setFbLoading(false);
+    }
   };
 
   return (
@@ -188,16 +213,34 @@ export default function Signup() {
               <div className="flex-1 h-px bg-slate-200"></div>
             </div>
 
-            {/* Social OAuth Buttons (Google Sign-Up) */}
-            <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleError}
-                theme="outline"
-                shape="pill"
-                width="320"
-                text="signup_with"
-              />
+            {/* Social OAuth Buttons (Google & Facebook Sign-Up) */}
+            <div className="flex flex-col gap-3">
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  theme="outline"
+                  shape="pill"
+                  width="320"
+                  text="signup_with"
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={handleFacebookSignup}
+                disabled={fbLoading || loading}
+                className="w-full max-w-[320px] mx-auto py-2.5 px-4 bg-[#1877F2] hover:bg-[#166fe5] text-white font-medium text-sm rounded-full shadow-sm transition-all flex items-center justify-center gap-2.5 active:scale-98 disabled:opacity-60"
+              >
+                {fbLoading ? (
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                ) : (
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                )}
+                <span>Sign up with Facebook</span>
+              </button>
             </div>
 
             {/* Footer Navigation */}

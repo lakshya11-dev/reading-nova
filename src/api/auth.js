@@ -15,13 +15,8 @@ export const googleLogin = async (idToken) => {
   return response.data;
 };
 
-export const socialLogin = async (provider, providerId, email, name) => {
-  const response = await api.post("/auth/social", {
-    provider,
-    provider_id: providerId,
-    email,
-    name,
-  });
+export const facebookLogin = async (accessToken) => {
+  const response = await api.post("/auth/facebook", { access_token: accessToken });
   return response.data;
 };
 
