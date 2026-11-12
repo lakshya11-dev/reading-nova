@@ -40,3 +40,4 @@ def verify_facebook_token(access_token: str) -> dict:
         }
     except httpx.RequestError as exc:
         raise ValueError(f"Unable to communicate with Facebook Graph API: {str(exc)}")
+
