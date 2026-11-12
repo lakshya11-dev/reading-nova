@@ -1,14 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 import { registerUser, googleLogin, facebookLogin } from "../api/auth";
 import { initFacebookSDK, loginWithFacebook } from "../utils/facebookAuth";
-import { useAuth } from "../context/AuthContext";
-import { CheckCircle2, Mail } from "lucide-react";
-import logoImg from "../assets/logo.png";
 import { useAuth } from "../context/AuthContext";
 import { CheckCircle2, Mail } from "lucide-react";
 import logoImg from "../assets/logo.png";
@@ -121,7 +115,7 @@ export default function Signup() {
             </div>
             <h3 className="text-lg font-bold text-slate-900 mb-2">Check Your Inbox!</h3>
             <p className="text-xs text-slate-600 leading-relaxed mb-6">
-              We've sent a verification link to <span className="font-semibold text-slate-900">{email}</span>.
+              We've sent a verification link to <span className="font-semibold text-slate-900">{email}</span>. 
               Please click the link in your email to activate your account before logging in.
             </p>
             <Link
